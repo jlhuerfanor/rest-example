@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.0.5" use-changelog="false" last-position="0,46" last-zoom="1" max-obj-count="4"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<role name="db_owner"
+ inherit="true"
+ sql-disabled="true">
+</role>
+
+<role name="db_reader"
+ inherit="true"
+ sql-disabled="true">
+</role>
+
+<role name="db_writer"
+ inherit="true"
+ sql-disabled="true">
+</role>
+
+<database name="library" is-template="false" allow-conns="true">
+	<role name="db_owner"/>
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<schema name="library" layers="0" rect-visible="true" fill-color="#e1e1e1">
+	<role name="postgres"/>
+</schema>
+
+<table name="book" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="library"/>
+	<role name="db_owner"/>
+	<position x="620" y="220"/>
+	<column name="id" not-null="true"
+	 identity-type="BY DEFAULT">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="title" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="author" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="publisher" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="year_published">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="book_pk" type="pk-constr" table="library.book">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<permission>
+	<object name="library" type="database"/>
+	<roles names="db_reader"/>
+	<privileges connect="grant-op"/>
+</permission>
+<permission>
+	<object name="library" type="database"/>
+	<roles names="db_writer"/>
+	<privileges connect="grant-op"/>
+</permission>
+<permission>
+	<object name="library.book" type="table"/>
+	<roles names="db_reader"/>
+	<privileges select="grant-op" references="grant-op" trigger="grant-op"/>
+</permission>
+<permission>
+	<object name="library.book" type="table"/>
+	<roles names="db_writer"/>
+	<privileges select="grant-op" delete="grant-op" insert="grant-op" update="grant-op" references="grant-op" trigger="grant-op"/>
+</permission>
+</dbmodel>

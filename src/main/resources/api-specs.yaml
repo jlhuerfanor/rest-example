@@ -1,0 +1,92 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 0.1.9
+servers:
+  - url: http://localhost:8080
+    description: Optional server description, e.g. Internal staging server for testing
+paths:
+  /books:
+    post:
+      summary: Register a new book in the library.
+      description: Register a new book in the library.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookInput"
+      responses:
+        '201':    # status code
+          description: The book gets registered in the library.
+          headers:
+            Location:
+              description: The URI of the registered book
+              schema:
+                type: string
+  /books/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: number
+          format: int32
+        required: true
+        description: Book id
+    get:
+      summary: Get book by ID.
+      description: Get book by ID.
+      responses:
+        '200':    # status code
+          description: A JSON representation of a book.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/BookOutput'
+    put:
+      summary: Update an existing book.
+      description: Update an existing book.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookInput"
+      responses:
+        '204':    # status code
+          description: The book gets updated.
+    delete:
+      summary: Delete an existing book.
+      description: Delete an existing book.
+      responses:
+        '204':    # status code
+          description: The book gets deleted.
+components:
+  schemas:
+    BookBase:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        publisher:
+          type: string
+        yearPublished:
+          type: number
+          format: int32
+      required:
+        - title
+        - author
+        - publisher
+    BookInput:
+      allOf: 
+        - $ref: '#/components/schemas/BookBase'
+      type: object
+    BookOutput:
+      allOf: 
+        - $ref: '#/components/schemas/BookBase'
+      type: object
+      properties:
+        id:
+          type: number
+          format: int32
