@@ -1,4 +1,4 @@
-package com.endava.workshops.restexample.application.adapter.primary;
+package com.endava.workshops.restexample.application.adapter.primary.rest;
 
 import java.net.URI;
 

@@ -1,4 +1,4 @@
-package com.endava.workshops.restexample.application.adapter.primary;
+package com.endava.workshops.restexample.application.adapter.primary.rest;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -69,7 +69,7 @@ public class BookInventoryController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBook(
             @PathVariable("id") Integer bookId,
-            @RequestBody BookInputDto updatedBook) {
+            @Valid @RequestBody BookInputDto updatedBook) {
         return Optional.of(updatedBook)
             .map(value -> conversionService.convert(updatedBook, Book.class))
             .map(value -> value.toBuilder().id(bookId).build())
