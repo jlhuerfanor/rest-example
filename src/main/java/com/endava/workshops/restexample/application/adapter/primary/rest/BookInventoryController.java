@@ -37,24 +37,25 @@ public class BookInventoryController {
     }
 
     @PostMapping
-    public ResponseEntity<?> insertBook(@Valid @RequestBody BookInputDto book) {
+    public ResponseEntity<BookOutputDto> insertBook(@Valid @RequestBody BookInputDto book) {
         return Optional.of(book)
             .map(value -> conversionService.convert(book, Book.class))
             .map(this.service::add)
-            .map(result -> ResponseEntity.created(ResponseUtils.getLocationUri(result.getId())).build())
+            .map(result -> conversionService.convert(result, BookOutputDto.class))
+            .map(result -> ResponseEntity.created(ResponseUtils.getLocationUri(result.getId())).body(result))
             .orElseThrow();
     }
 
     @GetMapping
     public ResponseEntity<? extends Collection<BookOutputDto>> getBooks(BookQueryCriteriaDto criteria) {
         return Optional.of(criteria)
-                .map(value -> conversionService.convert(criteria, BookQueryCriteria.class))
-                .map(this.service::find)
-                .map(result -> result.stream()
-                        .map(value -> conversionService.convert(value, BookOutputDto.class))
-                        .toList())
-                .map(ResponseEntity::ok)
-                .orElseThrow();
+            .map(value -> conversionService.convert(criteria, BookQueryCriteria.class))
+            .map(this.service::find)
+            .map(result -> result.stream()
+                    .map(value -> conversionService.convert(value, BookOutputDto.class))
+                    .toList())
+            .map(ResponseEntity::ok)
+            .orElseThrow();
     }
 
     @GetMapping("/{id}")
@@ -67,7 +68,7 @@ public class BookInventoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBook(
+    public ResponseEntity<?> updateOrCreateBook(
             @PathVariable("id") Integer bookId,
             @Valid @RequestBody BookInputDto updatedBook) {
         return Optional.of(updatedBook)

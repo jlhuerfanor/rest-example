@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  title: Sample API
-  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
-  version: 0.1.9
+  title: Library REST API
+  description: Example about REST in Spring boot
+  version: 1.0.1
 servers:
   - url: http://localhost:8080
     description: Optional server description, e.g. Internal staging server for testing
@@ -16,6 +16,47 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/BookInput"
+      responses:
+        '201':    # status code
+          description: The book gets registered in the library.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookOutput"
+          headers:
+            Location:
+              description: The URI of the registered book
+              schema:
+                type: string
+    get:
+      summary: Get an array of book that match the criteria.
+      description: Get an array of book that match the criteria.
+      parameters:
+        - in: query
+          name: title
+          required: false
+          description: Title
+          schema:
+            type: string
+        - in: query
+          name: author
+          required: false
+          description: Author.
+          schema:
+            type: string
+        - in: query
+          name: publisher
+          required: false
+          description: Publisher.
+          schema:
+            type: string
+        - in: query
+          name: yearPublished
+          required: false
+          description: Year published
+          schema:
+            type: number
+            format: int32
       responses:
         '201':    # status code
           description: The book gets registered in the library.
@@ -52,14 +93,25 @@ paths:
             schema:
               $ref: "#/components/schemas/BookInput"
       responses:
+        '201':    # status code
+          description: The book gets registered in the library.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookOutput"
+          headers:
+            Location:
+              description: The URI of the registered book
+              schema:
+                type: string
         '204':    # status code
-          description: The book gets updated.
+          description: Book info gets updated.
     delete:
       summary: Delete an existing book.
       description: Delete an existing book.
       responses:
         '204':    # status code
-          description: The book gets deleted.
+          description: The book gets deleted from the repository.
 components:
   schemas:
     BookBase:
